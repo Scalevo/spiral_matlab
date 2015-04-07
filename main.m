@@ -11,7 +11,7 @@ fov_d = 300;        % Size of FoV
 phi_1 = -2;            % Angle of sensors to stairdiagonal
 phi_2 = 1;
 
-scan_s = 1;          % Startpoint of beta calculation
+scan_s = 200;          % Startpoint of beta calculation
 scan_d = 100;            % Size of beta calculation
 
 beta_v = zeros( 0,scan_s+scan_d);
@@ -47,9 +47,15 @@ beta_v_s = smooth(beta_v);
 plot(beta_v_s);
 xlabel('Scan Nummber'),ylabel('\beta');
 
+
 figure
 plot(dx_1);
 hold on
 plot(dx_2);
+hold on
+plot(dx_1 - dx_2);
+legend('dx_1','dx_2','delta')
+xlabel('Scan Nummber'),ylabel('Phasenverschiebung [m]');
+
 toc
 
