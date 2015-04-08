@@ -1,4 +1,4 @@
-function [v_r,z_r] = matching(topic,scan_nr,phi,fov_s,fov_d,v0)
+function [v_r,z_r,se_r] = matching(topic,scan_nr,phi,fov_s,fov_d,v0)
 clear rosbag_wrapper;
 clear ros.Bag;
 
@@ -23,7 +23,7 @@ elseif strcmp('/cloud_2',topic)
     M(1,:) = msg.points(2,:);
     M(2,:) = -msg.points(1,:);
 end
-
+% 
 % figure
 % plot(M(1,:),M(2,:),'x');
 % axis equal
@@ -38,29 +38,22 @@ xi = MT(1,:);
 zi = MT(2,:);
 
 %% Initialize Variables for Stairparam Creation
-h0 = .17;
-t0 = .28;
-dx0 = 0.12;
-dz0 = .600;
 
-t = t0;
-h = h0;
-dx = dx0;
-dz = dz0;
+dz0 = 0.6;
 
-zi = zi + dz;
+zi = zi + dz0;
 %% Find z for x values
 
 [v_r,se_r,z_r] = stairparam(xi,zi,v0);
 %disp(se_r)
 
-% %  
-% figure
-% plot(xi,zi,'x');
-% axis equal tight
-% hold on
-% plot(xi,z_r,'o')
-% axis equal tight
-% hold on
+figure
+plot(xi,zi,'x');
+axis equal tight
+hold on
+plot(xi,z_r,'o')
+axis equal tight
+hold on
+xlabel(topic);
 
 end

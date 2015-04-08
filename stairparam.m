@@ -7,7 +7,7 @@
 %% Minimize delta for v
 
 handle = @delta;
-options = struct('MaxFunEvals',1000,'MaxIter',1000); % 'OutputFcn', @outfun,'PlotFcns',@optimplotfval
+options = struct('MaxFunEvals',1000,'MaxIter',5000); % 'OutputFcn', @outfun,'PlotFcns',@optimplotfval
 [v_r,se_r] = fminsearch(handle,v0_,options);
 %disp(v_r);
 
@@ -16,12 +16,19 @@ options = struct('MaxFunEvals',1000,'MaxIter',1000); % 'OutputFcn', @outfun,'Plo
     function [se] = delta(v)
         
         % Initialize parameters out of input vector
-        h     = v(1);
-        t     = v(2);
-        dx    = v(3);
-        
+       %  h     = v(1);
+         h = sqrt(v(1)^2);
+       %  t     = v(2);
+         t = sqrt(v(2)^2);
+         dx    = v(3);
+%        dz    = v(4);
+%         theta = v(4);
+% 
+%         xi = cos(theta)*x0 - sin(theta)*zi;
+%         zi = cos(theta)*zi + sin(theta)*x0;
+%         
         % Initialize helping parameters out of input paramters
-        xi = x0 + dx;
+         xi = x0 + dx;
         eta = atan2(t,h);
 %         a = h/2*cos(eta);           % Parameters used for fourier transform
 %         b = t/2*sin(eta);
@@ -58,6 +65,9 @@ options = struct('MaxFunEvals',1000,'MaxIter',1000); % 'OutputFcn', @outfun,'Plo
             end
         end
         
+%        z_r = z_r + dz; 
+       
+
         e = (zi - z_r);    % Error between pointcloud and template
         se = dot(e,e);
     end
