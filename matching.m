@@ -47,13 +47,15 @@ zi = zi + dz0;
 [v_r,se_r,z_r] = stairparam(xi,zi,v0);
 %disp(se_r)
 
-figure
-plot(xi,zi,'x');
-axis equal tight
-hold on
-plot(xi,z_r,'o')
-axis equal tight
-hold on
-xlabel(topic);
+% figure
+% plot(xi,zi,'x');
+% axis equal tight
+% hold on
+% plot(xi,z_r,'o')
+% axis equal tight
+% hold on
+% xlabel(topic);
+
+
 
 end
