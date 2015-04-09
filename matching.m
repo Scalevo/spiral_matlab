@@ -44,18 +44,16 @@ dz0 = 0.6;
 zi = zi + dz0;
 %% Find z for x values
 
-[v_r,se_r,z_r] = stairparam(xi,zi,v0);
-%disp(se_r)
-
+[v_r,se_r,z_r,xf,zf] = stairparam(xi,zi,v0);
+% disp(se_r)
+% 
 % figure
-% plot(xi,zi,'x');
+% plot(xf,zf,'x');
 % axis equal tight
 % hold on
-% plot(xi,z_r,'o')
+% plot(xf,z_r,'o')
 % axis equal tight
 % hold on
 % xlabel(topic);
-
-
 
 end

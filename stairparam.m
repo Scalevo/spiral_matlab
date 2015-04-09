@@ -1,4 +1,4 @@
-    function [ v_r,se_r,z_r ] = stairparam(x0,zi,v0_)
+    function [ v_r,se_r,z_r,xi,zi ] = stairparam(x0,z0,v0_)
 % Returns the result of the fminserach using start values as well as the
 % pointcloud vectors.
 %     
@@ -7,7 +7,7 @@
 %% Minimize delta for v
 
 handle = @delta;
-options = struct('MaxFunEvals',1000,'MaxIter',5000); % 'OutputFcn', @outfun,'PlotFcns',@optimplotfval
+options = struct('MaxFunEvals',1000,'MaxIter',1000); % 'OutputFcn', @outfun,'PlotFcns',@optimplotfval
 [v_r,se_r] = fminsearch(handle,v0_,options);
 %disp(v_r);
 
@@ -15,20 +15,22 @@ options = struct('MaxFunEvals',1000,'MaxIter',5000); % 'OutputFcn', @outfun,'Plo
 %% Delta function - calculates the difference between real-z and template-z
     function [se] = delta(v)
         
-        % Initialize parameters out of input vector
+      % Initialize parameters out of input vector
+      
        %  h     = v(1);
-         h = sqrt(v(1)^2);
        %  t     = v(2);
-         t = sqrt(v(2)^2);
-         dx    = v(3);
-%        dz    = v(4);
-%         theta = v(4);
-% 
-%         xi = cos(theta)*x0 - sin(theta)*zi;
-%         zi = cos(theta)*zi + sin(theta)*x0;
-%         
-        % Initialize helping parameters out of input paramters
-         xi = x0 + dx;
+        h = sqrt(v(1)^2);
+        t = sqrt(v(2)^2);
+        dx    = sqrt(v(3)^2);
+        dz    = v(4);
+        theta = v(5);
+
+        xi = cos(theta)*x0 - sin(theta)*z0;
+        zi = cos(theta)*z0 + sin(theta)*x0;
+        
+        zi = zi + dz;
+        xi = xi + dx;
+        
         eta = atan2(t,h);
 %         a = h/2*cos(eta);           % Parameters used for fourier transform
 %         b = t/2*sin(eta);
@@ -38,7 +40,7 @@ options = struct('MaxFunEvals',1000,'MaxIter',5000); % 'OutputFcn', @outfun,'Plo
         x1 = a;
         x2 = a + b;      
         
-% %        Sum the fourier series
+%%        Sum the fourier series
 %         z = 0;
 %         for n = 1:10
 % 
@@ -53,9 +55,9 @@ options = struct('MaxFunEvals',1000,'MaxIter',5000); % 'OutputFcn', @outfun,'Plo
 %             z = zn + z; 
 %         end
 %         z = z - cos(eta)*h/2;
+%%       If_else parametrisation
 
-%       If_else parametrisation
-        z_r = zeros(1,length(xi));
+        z_r = zeros(1,length(xi));        
         for it = 1:length(xi)
             n = floor(xi(it)/x2);
             if mod(xi(it),x2) < x1
@@ -64,10 +66,7 @@ options = struct('MaxFunEvals',1000,'MaxIter',5000); % 'OutputFcn', @outfun,'Plo
             z_r(it) = -xi(it)/(tan(eta)) + (n+1)*h/(sin(eta)) - h*sin(eta);
             end
         end
-        
-%        z_r = z_r + dz; 
        
-
         e = (zi - z_r);    % Error between pointcloud and template
         se = dot(e,e);
     end
