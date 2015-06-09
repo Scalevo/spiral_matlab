@@ -5,10 +5,14 @@
 
 
 %% Minimize delta for v
+lb = [.16,.2,10,-100,-100];
+ub = [.2,.35,100,100,100];
 
 handle = @delta;
-options = struct('MaxFunEvals',1000,'MaxIter',1000); % 'OutputFcn', @outfun,'PlotFcns',@optimplotfval
-[v_r,se_r] = fminsearch(handle,v0_,options);
+% options = struct('MaxFunEvals',1000,'MaxIter',1000,'PlotFcns',@optimplotfval); % 'OutputFcn', @outfun
+con_options = struct('Algorithm', 'sqp','PlotFcns',@optimplotfval); % 'OutputFcn', @outfun,,'PlotFcns',@optimplotfval
+% [v_r,se_r] = fminsearch(handle,v0_,options);
+[v_r, se_r] = fmincon(handle, v0_, [], [], [], [], lb, ub, [],con_options);
 %disp(v_r);
 
 
@@ -69,6 +73,24 @@ options = struct('MaxFunEvals',1000,'MaxIter',1000); % 'OutputFcn', @outfun,'Plo
        
         e = (zi - z_r);    % Error between pointcloud and template
         se = dot(e,e);
+        
+        
+%         plot(xi,zi,'x');
+%         axis equal tight
+%         plot(xi,z_r,'o')
+%         axis equal tight
+        
+        
+    plot(xi, zi, 'x');
+    axis equal tight
+    hold on;
+    plot(xi, z_r, 'o')
+    axis equal tight
+    hold off;
+    ylabel('z [m]','FontSize',20);
+    xlabel('x [m]','FontSize',20);
+    h_legend = legend('Transformed PointCloud', 'Matched Template');
+    set(h_legend,'FontSize',15);
     end
 end
 

@@ -1,4 +1,4 @@
-%% Finding the angle of the wheelchair on the stairs
+ %% Finding the angle of the wheelchair on the stairs
 clear all;
 close all;
 
@@ -13,7 +13,7 @@ phi_1 = -3;                          % Angle of sensors to stairdiagonal
 phi_2 = 1;
 
 scan_s = 1;                          % Startpoint of beta calculation
-scan_d = 747;                         % Size of beta calculation
+scan_d = 0;                         % Size of beta calculation
 
 v0_1 = [.17;.3;0.05;.0;10*pi/180];   % v0 = [heigth, depth, phase offset, sensor height, sensor rotation]
 v0_2 = [.17;.3;0.12;.0;10*pi/180];
@@ -48,13 +48,13 @@ if scan_d ~= 0;
 figure
 subplot(3,1,1)
 plot(v_v_r_1(1,:));
-xlabel('Scan Nummber'),ylabel('Treppenhöhe [m]');
+xlabel('Scan Count'),ylabel('Step Height [m]');
 subplot(3,1,2)
 plot(v_v_r_1(2,:));
-xlabel('Scan Nummber'),ylabel('Treppentiefe [m]');
-subplot(3,1,3)
-plot(v_v_r_1(3,:));
-xlabel('Scan Nummber'),ylabel('Phasenverschiebung [m]');
+xlabel('Scan Count'),ylabel('Step Depth [m]');
+% subplot(3,1,3)
+% plot(v_v_r_1(3,:));
+% xlabel('Scan Count'),ylabel('Phase Ofset [m]');
 
 figure
 subplot(3,1,1)
@@ -64,7 +64,7 @@ plot(v_v_2(1,:));
 hold on
 plot(v_v_1(1,:) - v_v_2(1,:));
 legend('/cloud_1','/cloud_2','delta')
-xlabel('Scan Nummber'),ylabel('Treppenhöhe [m]');
+xlabel('Scan Count'),ylabel('Step Height [m]');
 
 subplot(3,1,2)
 plot(v_v_1(2,:));
@@ -73,7 +73,7 @@ plot(v_v_2(2,:));
 hold on
 plot(v_v_1(2,:) - v_v_2(2,:));
 legend('/cloud_1','/cloud_2','delta')
-xlabel('Scan Nummber'),ylabel('Treppentiefe [m]');
+xlabel('Scan Count'),ylabel('Treppentiefe [m]');
 
 subplot(3,1,3)
 plot(v_v_1(3,:));
@@ -82,14 +82,14 @@ plot(v_v_2(3,:));
 hold on
 plot(v_v_1(3,:) - v_v_2(3,:));
 legend('/cloud_1','/cloud_2','delta')
-xlabel('Scan Nummber'),ylabel('Phasenverschiebung [m]');
+xlabel('Scan Count'),ylabel('Phase Offset [m]');
 
 figure
 plot(beta_v);
 hold on
 % beta_v_s = smooth(beta_v);
 % plot(beta_v_s);
-xlabel('Scan Nummber'),ylabel('\beta [°] - Angle of Wheelchair on Stairs ');
+xlabel('Scan Count'),ylabel('\beta [Â°] - Angle of Wheelchair on Stairs ');
 
 end
 
