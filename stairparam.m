@@ -7,15 +7,16 @@
 %% Minimize delta for v
 
 handle = @delta;
-options = struct('MaxFunEvals',1000,'MaxIter',1000); % 'OutputFcn', @outfun,'PlotFcns',@optimplotfval
-[v_r,se_r] = fminsearch(handle,v0_,options);
+options = struct('MaxFunEvals',1000,'MaxIter',1000,'TolX',1000,'TolFun',0.00001); % 'OutputFcn', @outfun,'PlotFcns',@optimplotfval
+[v_r,se_r,exitflag] = fminsearch(handle,v0_,options);
 %disp(v_r);
+disp(exitflag);
 
 
 %% Delta function - calculates the difference between real-z and template-z
     function [se] = delta(v)
         
-      % Initialize parameters out of input vector
+    %  Initialize parameters out of input vector
       
        %  h     = v(1);
        %  t     = v(2);

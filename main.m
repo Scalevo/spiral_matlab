@@ -1,4 +1,4 @@
-%% Finding the angle of the wheelchair on the stairs
+    %% Finding the angle of the wheelchair on the stairs
 clear all;
 close all;
 
@@ -13,10 +13,10 @@ phi_1 = -3;                          % Angle of sensors to stairdiagonal
 phi_2 = 1;
 
 scan_s = 1;                          % Startpoint of beta calculation
-scan_d = 747;                         % Size of beta calculation
+scan_d = 0;                        % Size of beta calculation
 
-v0_1 = [.17;.3;0.05;.0;10*pi/180];   % v0 = [heigth, depth, phase offset, sensor height, sensor rotation]
-v0_2 = [.17;.3;0.12;.0;10*pi/180];
+v0_1 = [.17;.3;0.05;0;1*pi/180];     % v0 = [heigth, depth, phase offset, sensor height, sensor rotation]
+v0_2 = [.17;.3;0.12;0;1*pi/180];
 
 v_r_1 = v0_1;
 v_r_2 = v0_2;
@@ -28,8 +28,8 @@ v_v_2   = zeros(length(v0_2),scan_d);
 %% Run fminsearch over mutliple scans.
 
 for scan_nr = scan_s:scan_s+scan_d;
-[v_r_1,z_r_1,se_r_1] = matching('/cloud_1',scan_nr,phi_1,fov_s,fov_d,v_r_1);
-[v_r_2,z_r_2,se_r_2] = matching('/cloud_2',scan_nr,phi_2,811-fov_s-fov_d,fov_d,v_r_2);
+[v_r_1,z_r_1,se_r_1,xf_1,zf_1] = matching('/cloud_1',scan_nr,phi_1,fov_s,fov_d,v_r_1);
+[v_r_2,z_r_2,se_r_2,xf_1,zf_1] = matching('/cloud_2',scan_nr,phi_2,811-fov_s-fov_d,fov_d,v_r_2);
 
 a = .63;                            % Distance between sensors
 beta = 180/pi*atan((v_r_1(3)-v_r_2(3))/a);
